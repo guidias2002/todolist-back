@@ -30,7 +30,7 @@ public class UserService {
         return userMapper.toUserDto(newUser);
     }
 
-    public List<UserPostDto> findAllUsers() {
+    public List<UserDto> findAllUsers() {
 
         return userMapper.toUserDtoList(userRepository.findAll());
     }
