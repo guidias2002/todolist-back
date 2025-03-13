@@ -1,6 +1,7 @@
 package com.desafio.datahub.todolist.controller;
 
 import com.desafio.datahub.todolist.dto.UserDto;
+import com.desafio.datahub.todolist.dto.UserPostDto;
 import com.desafio.datahub.todolist.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<Void> createUser(@Valid @RequestBody UserDto userDto) {
-        userService.createUser(userDto);
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserPostDto userPostDto) {
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.createUser(userPostDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<UserDto>> findAllUsers() {
+    public ResponseEntity<List<UserPostDto>> findAllUsers() {
 
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }

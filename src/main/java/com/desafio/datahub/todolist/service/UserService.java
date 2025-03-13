@@ -1,6 +1,8 @@
 package com.desafio.datahub.todolist.service;
 
+import com.desafio.datahub.todolist.domain.UserEntity;
 import com.desafio.datahub.todolist.dto.UserDto;
+import com.desafio.datahub.todolist.dto.UserPostDto;
 import com.desafio.datahub.todolist.mapper.UserMapper;
 import com.desafio.datahub.todolist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +19,18 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public void createUser(UserDto userDto) {
+    public UserDto createUser(UserPostDto userPostDto) {
 
-        if(userRepository.existsByEmail(userDto.email())) {
+        if(userRepository.existsByEmail(userPostDto.email())) {
             throw new RuntimeException("Email já cadastrado");
         }
 
-        userRepository.save(userMapper.toUserEntity(userDto));
+        UserEntity newUser = userRepository.save(userMapper.toUserEntity(userPostDto));
+
+        return userMapper.toUserDto(newUser);
     }
 
-    public List<UserDto> findAllUsers() {
+    public List<UserPostDto> findAllUsers() {
 
         return userMapper.toUserDtoList(userRepository.findAll());
     }
