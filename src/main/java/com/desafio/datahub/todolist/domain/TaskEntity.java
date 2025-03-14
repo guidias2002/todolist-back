@@ -18,11 +18,20 @@ public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
+    @Column(nullable = false)
     private LocalDate dueDate;
+
+    @Column(nullable = false)
     private Long userId;
 }
