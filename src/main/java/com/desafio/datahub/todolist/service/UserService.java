@@ -4,6 +4,7 @@ import com.desafio.datahub.todolist.domain.UserEntity;
 import com.desafio.datahub.todolist.dto.UserDto;
 import com.desafio.datahub.todolist.dto.UserPostDto;
 import com.desafio.datahub.todolist.exceptions.BlankFieldException;
+import com.desafio.datahub.todolist.exceptions.EmailAlreadyExistsException;
 import com.desafio.datahub.todolist.exceptions.NotFoundException;
 import com.desafio.datahub.todolist.mapper.UserMapper;
 import com.desafio.datahub.todolist.repository.UserRepository;
@@ -25,7 +26,7 @@ public class UserService {
         validateUserPostDto(userPostDto);
 
         if(userRepository.existsByEmail(userPostDto.email())) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new EmailAlreadyExistsException("Email '" + userPostDto.email() + "' já cadastrado");
         }
 
         UserEntity newUser = userRepository.save(userMapper.toUserEntity(userPostDto));
