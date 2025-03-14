@@ -26,11 +26,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleTaskOwnershipException(TaskOwnershipException ex) {
         ErrorResponse errorResponse = new ErrorResponse(403, ex.getMessage());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
 
     @ExceptionHandler(BlankFieldException.class)
     public ResponseEntity<ErrorResponse> handleBlankFieldException(BlankFieldException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(400, ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
         ErrorResponse errorResponse = new ErrorResponse(400, ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
