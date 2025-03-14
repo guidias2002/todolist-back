@@ -19,15 +19,12 @@ public class UserEntity {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "O nome é obrigatório")
     private String name;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "O e-mail é obrigatório")
     @Email(message = "Formato de e-mail inválido")
     private String email;
 
     @Column(nullable = false)
-    @NotBlank(message = "A senha é obrigatória")
     private String password;
 }
