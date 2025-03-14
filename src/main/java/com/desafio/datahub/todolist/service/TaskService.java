@@ -14,7 +14,9 @@ import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -69,6 +71,15 @@ public class TaskService {
     public List<TaskDto> filterTaskByStatus(TaskStatus status) {
 
         return taskMapper.toTaskDtoList(taskRepository.findTasksByStatus(status));
+    }
+
+    public List<TaskDto> orderByDueDate() {
+
+        return taskRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(TaskEntity::getDueDate))
+                .map(taskMapper::toTaskDto)
+                .collect(Collectors.toList());
     }
 
     public TaskEntity findTaskById(Long taskId) {
