@@ -29,4 +29,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
+    @ExceptionHandler(BlankFieldException.class)
+    public ResponseEntity<ErrorResponse> handleBlankFieldException(BlankFieldException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(400, ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
 }
