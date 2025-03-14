@@ -70,7 +70,11 @@ public class TaskService {
 
     public List<TaskDto> filterTaskByStatus(TaskStatus status) {
 
-        return taskMapper.toTaskDtoList(taskRepository.findTasksByStatus(status));
+        return taskRepository.findTasksByStatus(status)
+                .stream()
+                .sorted(Comparator.comparing(TaskEntity::getDueDate))
+                .map(taskMapper::toTaskDto)
+                .collect(Collectors.toList());
     }
 
     public List<TaskDto> orderByDueDate() {
