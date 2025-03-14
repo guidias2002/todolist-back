@@ -13,4 +13,5 @@ public interface TaskMapper {
 
     TaskDto toTaskDto(TaskEntity taskEntity);
     List<TaskDto> toTaskDtoList(List<TaskEntity> taskEntityList);
+    TaskEntity toTaskEntity(TaskPostDto taskPostDto);
 }
