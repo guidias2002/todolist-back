@@ -3,6 +3,7 @@ package com.desafio.datahub.todolist.service;
 import com.desafio.datahub.todolist.domain.UserEntity;
 import com.desafio.datahub.todolist.dto.UserDto;
 import com.desafio.datahub.todolist.dto.UserPostDto;
+import com.desafio.datahub.todolist.exceptions.BlankFieldException;
 import com.desafio.datahub.todolist.exceptions.NotFoundException;
 import com.desafio.datahub.todolist.mapper.UserMapper;
 import com.desafio.datahub.todolist.repository.UserRepository;
@@ -21,6 +22,7 @@ public class UserService {
     private UserMapper userMapper;
 
     public UserDto createUser(UserPostDto userPostDto) {
+        validateUserPostDto(userPostDto);
 
         if(userRepository.existsByEmail(userPostDto.email())) {
             throw new RuntimeException("Email já cadastrado");
@@ -40,5 +42,19 @@ public class UserService {
 
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
+    }
+
+    private void validateUserPostDto(UserPostDto userPostDto) {
+        if(userPostDto.name() == null || userPostDto.name().isBlank()) {
+            throw new BlankFieldException("O campo 'name' não pode estar vazio.");
+        }
+
+        if(userPostDto.email() == null || userPostDto.email().isBlank()) {
+            throw new BlankFieldException("O campo 'email' não pode estar vazio.");
+        }
+
+        if(userPostDto.password() == null || userPostDto.password().isBlank()) {
+            throw new BlankFieldException("O campo 'password' não pode estar vazio.");
+        }
     }
 }
