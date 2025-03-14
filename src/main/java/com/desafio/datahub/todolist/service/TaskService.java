@@ -3,7 +3,9 @@ package com.desafio.datahub.todolist.service;
 import com.desafio.datahub.todolist.domain.TaskEntity;
 import com.desafio.datahub.todolist.dto.TaskDto;
 import com.desafio.datahub.todolist.dto.TaskPostDto;
+import com.desafio.datahub.todolist.dto.TaskUpdateDto;
 import com.desafio.datahub.todolist.enums.TaskStatus;
+import com.desafio.datahub.todolist.exceptions.BlankFieldException;
 import com.desafio.datahub.todolist.exceptions.InvalidDueDateException;
 import com.desafio.datahub.todolist.exceptions.NotFoundException;
 import com.desafio.datahub.todolist.exceptions.TaskOwnershipException;
@@ -34,16 +36,10 @@ public class TaskService {
     public TaskDto createTask(TaskPostDto taskPostDto, Long userId) {
         userService.findUserById(userId);
 
-        if(taskPostDto.dueDate().isBefore(LocalDate.now())) {
-            throw new InvalidDueDateException("A data de vencimento não pode ser anterior à data atual.");
-        }
+        validateTaskPostDto(taskPostDto);
+        validateDueDate(taskPostDto.dueDate());
 
-        TaskEntity newTask = new TaskEntity();
-
-        newTask.setTitle(taskPostDto.title());
-        newTask.setDescription(taskPostDto.description());
-        newTask.setDueDate(taskPostDto.dueDate());
-        newTask.setStatus(taskPostDto.status());
+        TaskEntity newTask = taskMapper.toTaskEntity(taskPostDto);
         newTask.setUserId(userId);
 
         taskRepository.save(newTask);
@@ -86,9 +82,76 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    public TaskDto updateTask(Long taskId, Long userId, TaskUpdateDto taskUpdateDto) {
+        userService.findUserById(userId);
+
+        TaskEntity task = findTaskById(taskId);
+
+        updateTaskFields(task, taskUpdateDto);
+
+        taskRepository.save(task);
+
+        return taskMapper.toTaskDto(task);
+    }
+
+    private void updateTaskFields(TaskEntity task, TaskUpdateDto taskUpdateDto) {
+        if (taskUpdateDto.title() != null) {
+            validateNotBlank(taskUpdateDto.title(), "title");
+            task.setTitle(taskUpdateDto.title());
+        }
+
+        if (taskUpdateDto.description() != null) {
+            validateNotBlank(taskUpdateDto.description(), "description");
+            task.setDescription(taskUpdateDto.description());
+        }
+
+        if (taskUpdateDto.dueDate() != null) {
+            validateDueDate(taskUpdateDto.dueDate());
+            task.setDueDate(taskUpdateDto.dueDate());
+        } else {
+            throw new BlankFieldException("O campo 'dueDate' não pode estar vazio.");
+        }
+
+        if (taskUpdateDto.status() != null) {
+            task.setStatus(taskUpdateDto.status());
+        } else {
+            throw new BlankFieldException("O campo 'status' não pode estar vazio.");
+        }
+    }
+
+    private void validateTaskPostDto(TaskPostDto taskPostDto) {
+        if (taskPostDto.title() == null || taskPostDto.title().isBlank()) {
+            throw new BlankFieldException("O campo 'title' não pode estar vazio.");
+        }
+
+        if (taskPostDto.description() == null || taskPostDto.description().isBlank()) {
+            throw new BlankFieldException("O campo 'description' não pode estar vazio.");
+        }
+
+        if (taskPostDto.dueDate() == null) {
+            throw new BlankFieldException("O campo 'dueDate' não pode estar vazio.");
+        }
+
+        if (taskPostDto.status() == null) {
+            throw new BlankFieldException("O campo 'status' não pode estar vazio.");
+        }
+    }
+
+    private void validateNotBlank(String field, String fieldName) {
+        if (field.isBlank()) {
+            throw new BlankFieldException("O campo '" + fieldName + "' não pode estar vazio.");
+        }
+    }
+
     public TaskEntity findTaskById(Long taskId) {
 
         return taskRepository.findById(taskId)
                 .orElseThrow(() -> new NotFoundException("Tarefa não encontrada."));
+    }
+
+    private void validateDueDate(LocalDate dueDate) {
+        if(dueDate.isBefore(LocalDate.now())) {
+            throw new InvalidDueDateException("A data de vencimento não pode ser anterior à data atual.");
+        }
     }
 }

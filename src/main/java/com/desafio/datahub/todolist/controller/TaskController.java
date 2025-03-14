@@ -2,6 +2,7 @@ package com.desafio.datahub.todolist.controller;
 
 import com.desafio.datahub.todolist.dto.TaskDto;
 import com.desafio.datahub.todolist.dto.TaskPostDto;
+import com.desafio.datahub.todolist.dto.TaskUpdateDto;
 import com.desafio.datahub.todolist.enums.TaskStatus;
 import com.desafio.datahub.todolist.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,11 @@ public class TaskController {
     public ResponseEntity<List<TaskDto>> orderByDueDate() {
 
         return new ResponseEntity<>(taskService.orderByDueDate(), HttpStatus.OK);
+    }
+
+    @PutMapping("/update/taskId/{taskId}/userId/{userId}")
+    public ResponseEntity<TaskDto> updateTask(@PathVariable Long taskId, @PathVariable Long userId, @RequestBody TaskUpdateDto taskUpdateDto) {
+
+        return new ResponseEntity<>(taskService.updateTask(taskId, userId, taskUpdateDto), HttpStatus.OK);
     }
 }
