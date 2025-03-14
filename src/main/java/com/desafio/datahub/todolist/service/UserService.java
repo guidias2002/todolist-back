@@ -3,6 +3,7 @@ package com.desafio.datahub.todolist.service;
 import com.desafio.datahub.todolist.domain.UserEntity;
 import com.desafio.datahub.todolist.dto.UserDto;
 import com.desafio.datahub.todolist.dto.UserPostDto;
+import com.desafio.datahub.todolist.exceptions.NotFoundException;
 import com.desafio.datahub.todolist.mapper.UserMapper;
 import com.desafio.datahub.todolist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,9 @@ public class UserService {
         return userMapper.toUserDtoList(userRepository.findAll());
     }
 
-    public boolean existsUserById(Long userId) {
+    public UserEntity findUserById(Long userId) {
 
-        return userRepository.existsById(userId);
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
     }
 }
