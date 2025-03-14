@@ -18,7 +18,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @PostMapping("/create/{userId}")
+    @PostMapping("/create/userId/{userId}")
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskPostDto taskPostDto, @PathVariable Long userId) {
 
         return new ResponseEntity<>(taskService.createTask(taskPostDto, userId), HttpStatus.CREATED);
@@ -41,5 +41,11 @@ public class TaskController {
     public ResponseEntity<List<TaskDto>> filterTasksByStatus(@PathVariable TaskStatus status) {
 
         return new ResponseEntity<>(taskService.filterTaskByStatus(status), HttpStatus.OK);
+    }
+
+    @GetMapping("/orderByDueDate")
+    public ResponseEntity<List<TaskDto>> orderByDueDate() {
+
+        return new ResponseEntity<>(taskService.orderByDueDate(), HttpStatus.OK);
     }
 }
