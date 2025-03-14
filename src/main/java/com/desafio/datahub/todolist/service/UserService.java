@@ -34,4 +34,9 @@ public class UserService {
 
         return userMapper.toUserDtoList(userRepository.findAll());
     }
+
+    public boolean existsUserById(Long userId) {
+
+        return userRepository.existsById(userId);
+    }
 }
