@@ -34,10 +34,8 @@ public class TaskService {
 
 
     public TaskDto createTask(TaskPostDto taskPostDto, Long userId) {
-        userService.findUserById(userId);
-
         validateTaskPostDto(taskPostDto);
-        validateDueDate(taskPostDto.dueDate());
+        userService.findUserById(userId);
 
         TaskEntity newTask = taskMapper.toTaskEntity(taskPostDto);
         newTask.setUserId(userId);
@@ -48,7 +46,6 @@ public class TaskService {
     }
 
     public List<TaskDto> findAllTasks() {
-
         return taskMapper.toTaskDtoList(taskRepository.findAll());
     }
 
@@ -57,15 +54,12 @@ public class TaskService {
 
         TaskEntity task = findTaskById(taskId);
 
-        if(!task.getUserId().equals(userId)) {
-            throw new TaskOwnershipException("Apenas o criador da tarefa pode exclui-lá.");
-        }
+        validateTaskUserPermission(userId, task.getUserId());
 
         taskRepository.deleteById(taskId);
     }
 
     public List<TaskDto> filterTaskByStatus(TaskStatus status) {
-
         return taskRepository.findTasksByStatus(status)
                 .stream()
                 .sorted(Comparator.comparing(TaskEntity::getDueDate))
@@ -74,7 +68,6 @@ public class TaskService {
     }
 
     public List<TaskDto> orderByDueDate() {
-
         return taskRepository.findAll()
                 .stream()
                 .sorted(Comparator.comparing(TaskEntity::getDueDate))
@@ -87,35 +80,37 @@ public class TaskService {
 
         TaskEntity task = findTaskById(taskId);
 
-        updateTaskFields(task, taskUpdateDto);
+        updateTaskFields(task, taskUpdateDto, userId);
 
         taskRepository.save(task);
 
         return taskMapper.toTaskDto(task);
     }
 
-    private void updateTaskFields(TaskEntity task, TaskUpdateDto taskUpdateDto) {
-        if (taskUpdateDto.title() != null) {
-            validateNotBlank(taskUpdateDto.title(), "title");
+    private void updateTaskFields(TaskEntity task, TaskUpdateDto taskUpdateDto, Long userId) {
+        if (taskUpdateDto.title() != null && !taskUpdateDto.title().isBlank()) {
             task.setTitle(taskUpdateDto.title());
         }
 
-        if (taskUpdateDto.description() != null) {
-            validateNotBlank(taskUpdateDto.description(), "description");
+        if (taskUpdateDto.description() != null && !taskUpdateDto.description().isBlank()) {
             task.setDescription(taskUpdateDto.description());
         }
 
         if (taskUpdateDto.dueDate() != null) {
             validateDueDate(taskUpdateDto.dueDate());
             task.setDueDate(taskUpdateDto.dueDate());
-        } else {
-            throw new BlankFieldException("O campo 'dueDate' não pode estar vazio.");
         }
 
         if (taskUpdateDto.status() != null) {
             task.setStatus(taskUpdateDto.status());
-        } else {
-            throw new BlankFieldException("O campo 'status' não pode estar vazio.");
+        }
+
+        validateTaskUserPermission(userId, task.getUserId());
+    }
+
+    public void validateTaskUserPermission(Long userId, Long taskUserId) {
+        if(!taskUserId.equals(userId)) {
+            throw new TaskOwnershipException("Apenas o criador da tarefa pode editá-la ou excluí-la.");
         }
     }
 
@@ -135,12 +130,8 @@ public class TaskService {
         if (taskPostDto.status() == null) {
             throw new BlankFieldException("O campo 'status' não pode estar vazio.");
         }
-    }
 
-    private void validateNotBlank(String field, String fieldName) {
-        if (field.isBlank()) {
-            throw new BlankFieldException("O campo '" + fieldName + "' não pode estar vazio.");
-        }
+        validateDueDate(taskPostDto.dueDate());
     }
 
     public TaskEntity findTaskById(Long taskId) {
