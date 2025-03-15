@@ -6,6 +6,7 @@ import com.desafio.datahub.todolist.dto.UserPostDto;
 import com.desafio.datahub.todolist.exceptions.BlankFieldException;
 import com.desafio.datahub.todolist.exceptions.EmailAlreadyExistsException;
 import com.desafio.datahub.todolist.exceptions.NotFoundException;
+import com.desafio.datahub.todolist.exceptions.TaskOwnershipException;
 import com.desafio.datahub.todolist.mapper.UserMapper;
 import com.desafio.datahub.todolist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
