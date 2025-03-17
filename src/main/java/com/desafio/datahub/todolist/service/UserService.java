@@ -2,7 +2,6 @@ package com.desafio.datahub.todolist.service;
 
 import com.desafio.datahub.todolist.domain.UserEntity;
 import com.desafio.datahub.todolist.dto.LoginResponseDto;
-import com.desafio.datahub.todolist.dto.LoginDto;
 import com.desafio.datahub.todolist.dto.UserDto;
 import com.desafio.datahub.todolist.dto.UserPostDto;
 import com.desafio.datahub.todolist.exceptions.BlankFieldException;
@@ -37,11 +36,11 @@ public class UserService {
         return userMapper.toUserDto(newUser);
     }
 
-    public LoginResponseDto loginUser(LoginDto loginDto) {
-        UserEntity user = userRepository.findByEmail(loginDto.email())
+    public LoginResponseDto loginUser(String email, String password) {
+        UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Email não encontrado."));
 
-        if(!user.getPassword().equals(loginDto.password())) {
+        if(!user.getPassword().equals(password)) {
             throw new InvalidPasswordException("Senha inválida.");
         }
 
