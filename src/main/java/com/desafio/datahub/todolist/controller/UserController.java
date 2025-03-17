@@ -1,5 +1,7 @@
 package com.desafio.datahub.todolist.controller;
 
+import com.desafio.datahub.todolist.dto.LoginDto;
+import com.desafio.datahub.todolist.dto.LoginResponseDto;
 import com.desafio.datahub.todolist.dto.UserDto;
 import com.desafio.datahub.todolist.dto.UserPostDto;
 import com.desafio.datahub.todolist.service.UserService;
@@ -28,5 +30,11 @@ public class UserController {
     public ResponseEntity<List<UserDto>> findAllUsers() {
 
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto) {
+
+        return new ResponseEntity<>(userService.loginUser(loginDto), HttpStatus.OK);
     }
 }

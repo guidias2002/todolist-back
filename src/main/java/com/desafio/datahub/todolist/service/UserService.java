@@ -1,12 +1,14 @@
 package com.desafio.datahub.todolist.service;
 
 import com.desafio.datahub.todolist.domain.UserEntity;
+import com.desafio.datahub.todolist.dto.LoginResponseDto;
+import com.desafio.datahub.todolist.dto.LoginDto;
 import com.desafio.datahub.todolist.dto.UserDto;
 import com.desafio.datahub.todolist.dto.UserPostDto;
 import com.desafio.datahub.todolist.exceptions.BlankFieldException;
 import com.desafio.datahub.todolist.exceptions.EmailAlreadyExistsException;
+import com.desafio.datahub.todolist.exceptions.InvalidPasswordException;
 import com.desafio.datahub.todolist.exceptions.NotFoundException;
-import com.desafio.datahub.todolist.exceptions.TaskOwnershipException;
 import com.desafio.datahub.todolist.mapper.UserMapper;
 import com.desafio.datahub.todolist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,17 @@ public class UserService {
         UserEntity newUser = userRepository.save(userMapper.toUserEntity(userPostDto));
 
         return userMapper.toUserDto(newUser);
+    }
+
+    public LoginResponseDto loginUser(LoginDto loginDto) {
+        UserEntity user = userRepository.findByEmail(loginDto.email())
+                .orElseThrow(() -> new NotFoundException("Email não encontrado."));
+
+        if(!user.getPassword().equals(loginDto.password())) {
+            throw new InvalidPasswordException("Senha inválida.");
+        }
+
+        return new LoginResponseDto(user.getId());
     }
 
     public List<UserDto> findAllUsers() {
