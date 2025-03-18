@@ -50,7 +50,7 @@ public class TaskController {
         return new ResponseEntity<>(taskService.orderByDueDate(), HttpStatus.OK);
     }
 
-    @PutMapping("/update/taskId/{taskId}/userId/{userId}")
+    @PatchMapping("/update/taskId/{taskId}/userId/{userId}")
     public ResponseEntity<TaskDto> updateTask(@PathVariable Long taskId, @PathVariable Long userId, @RequestBody TaskUpdateDto taskUpdateDto) {
 
         return new ResponseEntity<>(taskService.updateTask(taskId, userId, taskUpdateDto), HttpStatus.OK);
