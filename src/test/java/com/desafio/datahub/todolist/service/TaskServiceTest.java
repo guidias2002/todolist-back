@@ -45,8 +45,8 @@ class TaskServiceTest {
     @BeforeEach
     void setUp() {
         taskPostDto = new TaskPostDto(
-                "Nova Tarefa",
-                "Descrição da tarefa",
+                "Task 1",
+                "Desc 1",
                 LocalDate.of(2025, 5, 20),
                 TaskStatus.PENDENTE
         );
