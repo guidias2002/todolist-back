@@ -198,6 +198,21 @@ API para gerenciamento de tarefas, desenvolvida com Java e Spring Boot. Permite 
 
 ---
 
+## Camada de Testes
+
+Foi implementada uma camada de testes para o `TaskService`, cobrindo as principais funcionalidades. Os seguintes métodos de teste foram desenvolvidos:
+
+- **`testCreateTask_Success`:** Valida a criação de uma tarefa com sucesso.
+- **`testFindAllTasks_Success`:** Verifica a listagem de todas as tarefas.
+- **`testDeleteTaskById_Success`:** Testa a exclusão de uma tarefa por ID.
+- **`testFilterTaskByStatus_Success`:** Valida a filtragem de tarefas por status.
+- **`testOrderByDueDate_Success`:** Testa a ordenação de tarefas por data de vencimento.
+- **`testUpdateTask_Success`:** Verifica a atualização de uma tarefa.
+
+Esses testes garantem a confiabilidade e funcionalidade do sistema, validando os cenários principais do gerenciamento de tarefas.
+
+---
+
 ## Requisitos Implementados
 - **Cadastro de Usuários**
   - Criar uma conta (registro de usuário com nome, e-mail e senha)
