@@ -1,4 +1,4 @@
-# Todo List - Back
+# Todo List - Backend
 
 ## Descrição
 API para gerenciamento de tarefas, desenvolvida com Java e Spring Boot. Permite o cadastro de usuários e a criação, edição, exclusão, listagem, filtragem e ordenação de tarefas. A API conta com tratameto de exceções e validações.
