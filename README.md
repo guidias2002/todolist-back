@@ -11,6 +11,7 @@ API para gerenciamento de tarefas, desenvolvida com Java e Spring Boot. Permite 
 - **MapStruct:** Mapeia objetos entre DTOs e entidades de forma eficiente.
 - **JUnit 5:** Framework para testes unitários em Java.
 - **Mockito:** Cria mocks para testes unitários, isolando dependências.
+- **Docker** Facilita a containerização da aplicação, garantindo ambientes consistentes e isolados.
 
 ## Endpoints
 
@@ -224,6 +225,13 @@ Esses testes garantem a confiabilidade e funcionalidade do sistema, validando os
 - **Filtragem e Ordenação**
   - Filtrar tarefas por status
   - Ordenar por data de vencimento
+ 
+---
+
+## Docker
+O Docker será utilizado para containerizar a aplicação e o banco de dados PostgreSQL, garantindo que o ambiente de desenvolvimento e testes sejam consistentes em qualquer máquina. Com o Docker, a configuração do ambiente se torna mais simples e escalável, permitindo que os contêineres da aplicação e do banco de dados sejam criados e executados automaticamente, sem a necessidade de configuração manual. Isso facilita a execução do projeto em diferentes sistemas e reduz problemas de compatibilidade entre ambientes. 
+
+---
 
 ## Como Rodar o Projeto
 
@@ -231,6 +239,7 @@ Esses testes garantem a confiabilidade e funcionalidade do sistema, validando os
 Certifique-se de ter instalado:
 - Java 17
 - Utilize o Maven Wrapper ou instale o Maven
+- Docker
 
 ### Passos para execução
 
@@ -243,9 +252,7 @@ Certifique-se de ter instalado:
    cd todolist-back
    ```
 3.Compile e execute a aplicação:
-```sh
-   bash
-    ./mvn install
-    ./mvn spring-boot:run
-   ```
+  ```sh
+  docker-compose up --build
+  ```
    
