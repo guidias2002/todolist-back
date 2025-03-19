@@ -12,6 +12,7 @@ API para gerenciamento de tarefas, desenvolvida com Java e Spring Boot. Permite 
 - **JUnit 5:** Framework para testes unitários em Java.
 - **Mockito:** Cria mocks para testes unitários, isolando dependências.
 - **Docker:** Facilita a containerização da aplicação, garantindo ambientes consistentes e isolados.
+- **PostgreSQL:** Banco de dados relacional open-source, robusto e escalável.
 
 ## Endpoints
 
