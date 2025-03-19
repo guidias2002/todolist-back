@@ -134,7 +134,7 @@ API para gerenciamento de tarefas, desenvolvida com Java e Spring Boot. Permite 
   },
   {
     "id": 1,
-    "title": "Criar entidade Task",
+    "title": "Criar entidade User",
     "description": "Seguir boas práticas",
     "status": "PENDENTE",
     "dueDate": "2025-03-20"
