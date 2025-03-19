@@ -249,7 +249,7 @@ Certifique-se de ter instalado:
    ```sh
    cd todolist-back
    ```
-3.Compile e execute a aplicação:
+3.Compile e execute a aplicação com Docker:
   ```sh
   docker-compose up --build
   ```
