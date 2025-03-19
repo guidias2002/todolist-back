@@ -210,8 +210,6 @@ Foi implementada uma camada de testes para o `TaskService`, cobrindo as principa
 - **`testOrderByDueDate_Success`:** Testa a ordenação de tarefas por data de vencimento.
 - **`testUpdateTask_Success`:** Verifica a atualização de uma tarefa.
 
-Esses testes garantem a confiabilidade e funcionalidade do sistema, validando os cenários principais do gerenciamento de tarefas.
-
 ---
 
 ## Requisitos Implementados
