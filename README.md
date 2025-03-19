@@ -11,7 +11,7 @@ API para gerenciamento de tarefas, desenvolvida com Java e Spring Boot. Permite 
 - **MapStruct:** Mapeia objetos entre DTOs e entidades de forma eficiente.
 - **JUnit 5:** Framework para testes unitários em Java.
 - **Mockito:** Cria mocks para testes unitários, isolando dependências.
-- **Docker** Facilita a containerização da aplicação, garantindo ambientes consistentes e isolados.
+- **Docker:** Facilita a containerização da aplicação, garantindo ambientes consistentes e isolados.
 
 ## Endpoints
 
